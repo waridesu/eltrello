@@ -1,0 +1,18 @@
+# Node.js
+node_modules/
+.env
+
+# Build output
+build/
+dist/
+
+# IDE and editor files
+.idea/
+.vscode/
+*.iml
+
+# Logs
+logs/
+*.log
+/api/uploads/
+.vscode
