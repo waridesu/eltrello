@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import UserModel from '../models/user';
+import User from '../models/user';
 import { IUserDocument } from "../types/user.interface";
 import { Error } from "mongoose";
 import jwt from "jsonwebtoken";
@@ -12,12 +12,12 @@ const normalizeUser = (user: IUserDocument) => {
         email: user.email,
         username: user.username,
         id: user.id,
-        token
+        token: `Bearer ${token}`
     }
 }
 export const register = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const newUser = new UserModel({
+        const newUser = new User({
             email: req.body.email,
             username: req.body.username,
             password: req.body.password
@@ -36,7 +36,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 };
 export const login = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const user = await UserModel.findOne({email: req.body.email}).select("+password");
+        const user = await User.findOne({email: req.body.email}).select("+password");
         const errors = {emailOrPassword: "Invalid email or password"};
         if (!user) return res.status(422).json(errors);
         const isSamePassword = await user.validatePassword(req.body.password);
@@ -47,7 +47,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     }
 };
 
-export const currentUser = async (req: ExpressRequestInterface, res: Response, next: NextFunction) => {
+export const currentUser = async (req: ExpressRequestInterface, res: Response) => {
     if (!req.user) return res.sendStatus(401);
     res.send(normalizeUser(req.user))
 };

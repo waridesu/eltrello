@@ -35,4 +35,4 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.validatePassword = async function (password: string) {
     return await bcrypt.compare(password, this.password);
 };
-export default model<IUserDocument>("UserModel", userSchema);
+export default model<IUserDocument>("User", userSchema);
