@@ -4,6 +4,7 @@ import { AuthService } from "../../services/auth.service";
 import { Router, RouterLink } from "@angular/router";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { HttpErrorResponse } from "@angular/common/http";
+import { SocketService } from "../../../../shared/services/socket.service";
 
 @Component({
   selector: 'auth-register',
@@ -21,7 +22,11 @@ export class RegisterComponent {
     password: ['', Validators.required],
   });
 
-  constructor(private fb: FormBuilder, private authSvc: AuthService, private router: Router) {}
+  constructor(private fb: FormBuilder,
+              private authSvc: AuthService,
+              private router: Router,
+              private socket: SocketService) {
+  }
 
   onSubmit(): void {
     const {email, username, password} = this.form.value;
@@ -31,6 +36,7 @@ export class RegisterComponent {
       next: (currentUser) => {
         console.log(currentUser);
         this.authSvc.setToken(currentUser);
+        this.socket.setSocket(currentUser);
         this.authSvc.setCurrentUser(currentUser);
         this.errorMassage = null;
         this.router.navigateByUrl('/');

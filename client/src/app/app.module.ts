@@ -9,6 +9,8 @@ import { LoginComponent } from './components/auth/components/login/login.compone
 import { ReactiveFormsModule } from "@angular/forms";
 import { AuthInterceptor } from "./components/auth/services/auth.interceptor";
 import { BoardsComponent } from './components/boards/components/boards/boards.component';
+import { BoardComponent } from './components/boards/components/boards/board/board.component';
+import { SocketService } from "./shared/services/socket.service";
 
 @NgModule({
   declarations: [
@@ -20,9 +22,10 @@ import { BoardsComponent } from './components/boards/components/boards/boards.co
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    BoardsComponent
+    BoardsComponent,
+    BoardComponent,
   ],
-  providers: [AuthService, {
+  providers: [AuthService, SocketService, {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true

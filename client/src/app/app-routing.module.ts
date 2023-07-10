@@ -21,6 +21,11 @@ const routes: Routes = [
     path: 'boards',
     component: BoardsComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'boards/:id', loadComponent: () =>
+      import('./components/boards/components/boards/board/board.component').then((m) => m.BoardComponent),
+    canActivate: [AuthGuard]
   }
 ];
 
