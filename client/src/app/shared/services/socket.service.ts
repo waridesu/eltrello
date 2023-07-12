@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 import { ICurrentUser } from "../../components/auth/types/current-user.interface";
 import { io, Socket } from "socket.io-client";
 import { environment } from "../../../environment/environments";
-@Injectable()
+import { Observable } from "rxjs";
+@Injectable({
+  providedIn: 'root'
+})
 export class SocketService {
   socket: Socket | undefined;
 
@@ -21,5 +24,16 @@ export class SocketService {
       throw new Error('Socket is not defined');
     }
     this.socket.disconnect();
+  }
+
+  listen<T>(eventName: string): Observable<T> {
+    if (!this.socket) {
+      throw new Error('Socket is not defined');
+    }
+    return new Observable(subscriber => {
+      this.socket?.on(eventName, (data: T) => {
+        subscriber.next(data);
+      })
+    })
   }
 }

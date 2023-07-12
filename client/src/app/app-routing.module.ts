@@ -23,9 +23,15 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'boards/:id', loadComponent: () =>
+    path: 'boards/:boardId', loadComponent: () =>
       import('./components/boards/components/boards/board/board.component').then((m) => m.BoardComponent),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'tasks/:taskId', loadComponent: () =>
+          import('./components/boards/components/boards/board/task-modal/task-modal.component').then((m) => m.TaskModalComponent),
+      }
+    ]
   }
 ];
 

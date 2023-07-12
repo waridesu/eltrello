@@ -11,6 +11,7 @@ import { AuthInterceptor } from "./components/auth/services/auth.interceptor";
 import { BoardsComponent } from './components/boards/components/boards/boards.component';
 import { BoardComponent } from './components/boards/components/boards/board/board.component';
 import { SocketService } from "./shared/services/socket.service";
+import { TaskModalComponent } from "./components/boards/components/boards/board/task-modal/task-modal.component";
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { SocketService } from "./shared/services/socket.service";
     ReactiveFormsModule,
     BoardsComponent,
     BoardComponent,
+    TaskModalComponent
   ],
   providers: [AuthService, SocketService, {
     provide: HTTP_INTERCEPTORS,

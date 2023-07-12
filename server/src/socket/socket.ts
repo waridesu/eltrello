@@ -2,10 +2,13 @@ import { Server } from "socket.io";
 import { Server as HttpServer } from 'http';
 import { SocketEventsEnum } from "../types/socket-events.enum";
 import * as BoardController from "../controllers/boards";
+import * as ColumnController from "../controllers/column";
+import * as TaskController from "../controllers/task";
 import jwt from "jsonwebtoken";
 import { secret } from "../config";
 import User from "../models/user";
 import { ISocket } from "../types/socket.interface";
+
 export default function setupSocketIoServer(httpsServer: HttpServer) {
     const io = new Server(httpsServer, {
         cors: {origin: '*'}
@@ -26,16 +29,38 @@ export default function setupSocketIoServer(httpsServer: HttpServer) {
         }
     })
         .on('connection', (socket) => {
-            console.log('a user connected');
-            socket.on('chat message', (msg) => {
-                console.log('message: ' + msg);
-            });
-
             socket.on(SocketEventsEnum.boardsJoin, (data) => {
-                BoardController.joinBoard(io, socket, data);
+                BoardController?.joinBoard(io, socket, data);
             });
             socket.on(SocketEventsEnum.boardsLeave, (data) => {
-                BoardController.leaveBoard(io, socket, data);
+                BoardController?.leaveBoard(io, socket, data);
+            });
+            socket.on(SocketEventsEnum.columnsCreate, (data) => {
+                ColumnController?.createColumn(io, socket, data);
+            });
+            socket.on(SocketEventsEnum.tasksCreate, (data) => {
+                TaskController?.createTask(io, socket, data);
+            });
+            socket.on(SocketEventsEnum.boardsUpdate, (data) => {
+                BoardController?.updateBoard(io, socket, data);
+            });
+            socket.on(SocketEventsEnum.boardsDelete, (data) => {
+                BoardController?.deleteBoard(io, socket, data);
+            });
+            socket.on(SocketEventsEnum.columnsDelete, (data) => {
+                ColumnController?.deleteColumn(io, socket, data);
+            });
+
+            socket.on(SocketEventsEnum.columnsUpdate, (data) => {
+                ColumnController?.updateColumn(io, socket, data);
+            });
+
+            socket.on(SocketEventsEnum.tasksUpdate, (data) => {
+                TaskController?.updateTask(io, socket, data);
+            });
+
+            socket.on(SocketEventsEnum.tasksDelete, (data) => {
+                TaskController?.deleteTask(io, socket, data);
             });
         })
 }

@@ -22,10 +22,8 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
             username: req.body.username,
             password: req.body.password
         });
-        console.log('new user', newUser);
         const saveUser = await newUser.save();
         res.send(normalizeUser(saveUser))
-        console.log('saved user', saveUser);
     } catch (err) {
         if (err instanceof Error.ValidationError) {
             const messages = Object.values(err.errors).map((val) => val.message);

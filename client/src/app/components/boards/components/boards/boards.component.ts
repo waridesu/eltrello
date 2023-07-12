@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BoardsService } from "../../../../shared/services/boards.service";
-import { BoardInterface } from "../../../../shared/types/board.interface";
+import { IBoard } from "../../../../shared/types/board.interface";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 import { InlineFormComponent } from "../../../../shared/components/inline-form/inline-form.component";
 import { CommonModule, NgForOf } from "@angular/common";
@@ -22,7 +22,7 @@ import { TopBarComponent } from "../../../../shared/components/topbar/top-bar.co
   styleUrls: ['./boards.component.scss']
 })
 export class BoardsComponent implements OnInit {
-  boards: BoardInterface[] = [];
+  boards: IBoard[] = [];
   constructor(private boardsService: BoardsService) {}
 
   ngOnInit(): void {
